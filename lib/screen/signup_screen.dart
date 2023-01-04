@@ -1,12 +1,12 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/authentication/authentication.dart';
 import 'package:my_movie_app/main.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key, this.auth, this.context});
-  final Authentication? auth;
-  final BuildContext? context;
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -15,32 +15,6 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  Future _signUp(context) async {
-    try {
-      final User user = await widget.auth!.signUp(
-        _emailController.text,
-        _passwordController.text,
-      );
-      print(user.uid);
-      if (user.uid.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please enter a valid email'),
-          ),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomePage(),
-          ),
-        );
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         hintText: 'Enter the email',
@@ -124,6 +99,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
+                      autocorrect: false,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         hintText: '........',
@@ -155,7 +132,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        final userCredential = await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text);
+                        print(userCredential.user!.uid);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'invalid-email') {
+                          showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                    content: Text('Enter a Valid E-mail'),
+                                  ));
+                        } else if (e.code == 'weak-password') {
+                          log('Enter-a strong password');
+                        } else if (e.code == 'email-already-in-use') {
+                          // log('Enter-a strong password');
+                          print('Email has been used');
+                        }
+                      } catch (e) {
+                        log(e.toString());
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 201, 0, 124),
                       fixedSize: const Size(300, 50),
@@ -167,9 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: const Text("Sign Up"),
                   ),
                   TextButton(
-                    onPressed: () {
-                      _signUp(context);
-                    },
+                    onPressed: () async {},
                     child: const Text(
                       'Already have an account? Log in',
                       style: TextStyle(color: Colors.white, fontSize: 16),

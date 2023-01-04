@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:my_movie_app/authentication/authentication.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key, this.auth});
-  final Authentication? auth;
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -16,19 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Future _signIn() async {
-    try {
-      final User user = await widget.auth!.signIn(
-        _emailController.text,
-        _passwordController.text,
-      );
-      if (user.uid !=null) {
-        log("User is signed in");
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +96,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
-                    onPressed: _signIn,
+                    onPressed: () async {
+                      try {
+                        
+                        final userCredential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _emailController.text,
+                                password: _passwordController.text);
+                        print(userCredential.user!.uid);
+                        // log(_emailController.text);
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'invalid-email') {
+                          showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                    content: Text('Enter a Valid E-mail'),
+                                  ));
+                        } else if (e.code == 'password-incorrect') {
+                          log('please enter a valid password');
+                        } else if (e.code == 'email-already-in-use') {
+                          // log('Enter-a strong password');
+                          print('Email has been used');
+                        }
+                      } catch (e) {
+                        log(e.toString());
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 201, 0, 124),
                       fixedSize: const Size(300, 50),
@@ -121,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text("Login"),
                   ),
                   TextButton(
-                    onPressed: (){},
+                    onPressed: () {},
                     child: const Text(
                       'Not a member? Join in',
                       style: TextStyle(color: Colors.white, fontSize: 16),
@@ -142,5 +154,4 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     super.dispose();
   }
-
 }
