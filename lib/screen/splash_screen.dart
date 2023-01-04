@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -17,10 +16,11 @@ class SplashScreen extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomLeft,
                 colors: [
-                  Color(0xFF840052),
-                  // Color(0xFF840052).withOpacity(0.89),
                   Color(0xFF840052).withOpacity(0.89),
-                  Color(0xFF840052),
+                  // Color(0xFF840052).withOpacity(0.89),
+                  // Color(0xFF840052),
+                  Color(0xFF840052).withOpacity(1),
+                   Color(0xFF840052).withOpacity(0.89),
                 ],
               ),
             ),
