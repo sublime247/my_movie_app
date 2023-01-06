@@ -2,8 +2,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_movie_app/authentication/authentication.dart';
-import 'package:my_movie_app/main.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -134,24 +132,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        final userCredential = await FirebaseAuth.instance
+                        await FirebaseAuth.instance
                             .createUserWithEmailAndPassword(
                                 email: _emailController.text,
                                 password: _passwordController.text);
-                        print(userCredential.user!.uid);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'invalid-email') {
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user?.emailVerified ?? false) {
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/login', (route) => false);
+                        }else{
+                          await user?.sendEmailVerification();
                           showDialog(
                               context: context,
                               builder: (context) => const AlertDialog(
-                                    content: Text('Enter a Valid E-mail'),
-                                  ));
-                        } else if (e.code == 'weak-password') {
-                          log('Enter-a strong password');
-                        } else if (e.code == 'email-already-in-use') {
-                          // log('Enter-a strong password');
-                          print('Email has been used');
+                                    content: Text('Check your email for verification'),
+                            ));
                         }
+                      } on FirebaseAuthException catch (e) {
+                        
                       } catch (e) {
                         log(e.toString());
                       }
@@ -167,7 +165,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: const Text("Sign Up"),
                   ),
                   TextButton(
-                    onPressed: () async {},
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/login', (route) => false);
+                    },
                     child: const Text(
                       'Already have an account? Log in',
                       style: TextStyle(color: Colors.white, fontSize: 16),

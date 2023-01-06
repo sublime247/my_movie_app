@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:my_movie_app/authentication/authentication.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -98,33 +97,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        final userCredential = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text);
-                        print(userCredential.user!.uid);
-                        // log(_emailController.text);
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: _emailController.text,
+                            password: _passwordController.text);
+                        final user = FirebaseAuth.instance.currentUser;
+                        if (user?.emailVerified ?? false) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/main-home', (route) => false);
+                        } else {
+                          Navigator.of(context).pushNamed('/verify-email');
+                        }
                       } on FirebaseAuthException catch (e) {
-                        if (e.code == 'invalid-email') {
-                          showDialog(
-                              context: context,
-                              builder: (context) => const AlertDialog(
-                                    content: Text('Enter a Valid E-mail'),
-                                  ));
-                        } else if (e.code == 'password-incorrect') {
-                          log('please enter a valid password');
-                        } else if (e.code == 'weak-password') {
-                          print('Enter-a strong password');
-                        }else if(e.code=='user-not-found'){
-                           showDialog(
-                              context: context,
-                              builder: (context) => const AlertDialog(
-                                    content: Text('Credentials Not found please create an account'),
-                                  ));
-                        }
-                         else {
-                          log(e.code);
-                        }
+                       
                       } catch (e) {
                         log(e.toString());
                       }
@@ -140,7 +124,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: const Text("Login"),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/register', (route) => false);
+                    },
                     child: const Text(
                       'Not a member? Join in',
                       style: TextStyle(color: Colors.white, fontSize: 16),
