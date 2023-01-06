@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/authentication/authentication.dart';
 import 'package:my_movie_app/screen/login_screen.dart';
@@ -21,8 +22,26 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: LoginScreen(),
-    );
+    return Scaffold(
+        body: FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            final currentUser = FirebaseAuth.instance.currentUser;
+            if (currentUser!.emailVerified) {
+              print('User is logged in');
+            } else {
+              print('you need to verify your email');
+            }
+             return Text('done...');
+
+          default:
+            return Text('Loading...');
+        }
+      },
+    ));
   }
 }

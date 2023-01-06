@@ -98,7 +98,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        
                         final userCredential = await FirebaseAuth.instance
                             .signInWithEmailAndPassword(
                                 email: _emailController.text,
@@ -114,9 +113,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ));
                         } else if (e.code == 'password-incorrect') {
                           log('please enter a valid password');
-                        } else if (e.code == 'email-already-in-use') {
-                          // log('Enter-a strong password');
-                          print('Email has been used');
+                        } else if (e.code == 'weak-password') {
+                          print('Enter-a strong password');
+                        }else if(e.code=='user-not-found'){
+                           showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                    content: Text('Credentials Not found please create an account'),
+                                  ));
+                        }
+                         else {
+                          log(e.code);
                         }
                       } catch (e) {
                         log(e.toString());
