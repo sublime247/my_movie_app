@@ -1,13 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_movie_app/firebase_options.dart';
 import 'package:my_movie_app/services/auth_exceptions.dart';
 import 'package:my_movie_app/services/auth_user.dart';
 
 abstract class AuthProvider {
+  Future<void> initialize();
   AuthUser? get currentUser;
   Future<AuthUser> signUp({required String email, required String password});
   Future<AuthUser> logIn({required String email, required String password});
   Future<void> signOut();
   Future<void> sendEmailVerification();
+  Future<AuthUser> signInWithGoogle();
 }
 
 class Auth implements AuthProvider {
@@ -102,5 +107,31 @@ class Auth implements AuthProvider {
     } catch (_) {
       throw GenericException();
     }
+  }
+
+  @override
+  Future<void> initialize() async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
+
+  @override
+  Future<AuthUser> signInWithGoogle() async {
+    final withGoogle = GoogleSignIn();
+    final googleUsers = await withGoogle.signIn();
+    if (googleUsers != null) {
+      final googleAuth = await googleUsers.authentication;
+      if (googleAuth.idToken != null) {
+        final userCredential = await FirebaseAuth.instance.signInWithCredential(
+            GoogleAuthProvider.credential(
+                idToken: googleAuth.idToken,
+                accessToken: googleAuth.accessToken));
+        return userCredential.user != null
+            ? AuthUser.fromFirebase(userCredential.user!)
+            : throw UserNotLoggedIn();
+      }
+    }
+    throw UserNotLoggedIn();
   }
 }

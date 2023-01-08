@@ -1,8 +1,7 @@
-import 'dart:developer';
-// import 'dart:ffi';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_movie_app/services/auth_exceptions.dart';
+import 'package:my_movie_app/services/auth_service.dart';
+import 'package:my_movie_app/widgets/dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -97,20 +96,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        await AuthService.firebase().logIn(
                             email: _emailController.text,
                             password: _passwordController.text);
-                        final user = FirebaseAuth.instance.currentUser;
-                        if (user?.emailVerified ?? false) {
+
+                        final user = AuthService.firebase().currentUser;
+                        if (user?.isEmailVErified ?? false) {
                           Navigator.of(context).pushNamedAndRemoveUntil(
                               '/main-home', (route) => false);
                         } else {
                           Navigator.of(context).pushNamed('/verify-email');
                         }
-                      } on FirebaseAuthException catch (e) {
-                       
-                      } catch (e) {
-                        log(e.toString());
+                      } on InvalidEmail {
+                        return showErrorDialog(context, 'Enter a Valid E-mail');
+                      } on IncorrectPassword {
+                        return showErrorDialog(context, 'Password In-correct');
+                      } on UserNotFound {
+                        return showErrorDialog(context, 'User Not found');
+                      } on GenericException {
+                        return showErrorDialog(context, 'Authentication error');
                       }
                     },
                     style: ElevatedButton.styleFrom(

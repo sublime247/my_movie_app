@@ -5,6 +5,8 @@ class AuthService implements AuthProvider {
   final AuthProvider authProvider;
 
   const AuthService(this.authProvider);
+
+  factory AuthService.firebase() => AuthService(Auth());
   @override
   // TODO: implement currentUser
   AuthUser? get currentUser => authProvider.currentUser;
@@ -31,4 +33,10 @@ class AuthService implements AuthProvider {
         email: email,
         password: password,
       );
+
+  @override
+  Future<void> initialize() => authProvider.initialize();
+  
+  @override
+  Future<AuthUser> signInWithGoogle()=>authProvider.signInWithGoogle();
 }

@@ -2,6 +2,10 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:my_movie_app/services/auth_exceptions.dart';
+import 'package:my_movie_app/services/auth_provider.dart';
+import 'package:my_movie_app/services/auth_service.dart';
+import 'package:my_movie_app/widgets/dialog.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -129,29 +133,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  TextButton(
+                    onPressed:() async{
+                   await AuthService.firebase().signInWithGoogle();
+                   Navigator.of(context).pushNamed('/main-home');
+                  },child: Text('continue with googlr')),
                   ElevatedButton(
                     onPressed: () async {
                       try {
-                        await FirebaseAuth.instance
-                            .createUserWithEmailAndPassword(
-                                email: _emailController.text,
-                                password: _passwordController.text);
-                        final user = FirebaseAuth.instance.currentUser;
-                        if (user?.emailVerified ?? false) {
-                          Navigator.of(context)
-                              .pushNamedAndRemoveUntil('/login', (route) => false);
-                        }else{
-                          await user?.sendEmailVerification();
+                         AuthService.firebase().signUp(
+                            email: _emailController.text,
+                            password: _passwordController.text);
+
+                        final user = AuthService.firebase().currentUser;
+                        if (user!.isEmailVErified) {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/login', (route) => false);
+                        } else {
+                          await AuthService.firebase().sendEmailVerification();
                           showDialog(
                               context: context,
                               builder: (context) => const AlertDialog(
-                                    content: Text('Check your email for verification'),
-                            ));
+                                    content: Text(
+                                        'Check your email for verification'),
+                                  ));
                         }
-                      } on FirebaseAuthException catch (e) {
-                        
-                      } catch (e) {
-                        log(e.toString());
+                     } on InvalidEmail{
+                        return showErrorDialog(context, 'Enter a Valid E-mail');
+                      }on WeakPassowrd{
+                        return showErrorDialog(context, 'Password is weak');
+                      }on UsedEmail{
+                        return showErrorDialog(context, 'E-mail already used');
+                      }on GenericException{
+                        return showErrorDialog(context, 'An error occured');
                       }
                     },
                     style: ElevatedButton.styleFrom(

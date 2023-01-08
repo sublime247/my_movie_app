@@ -12,8 +12,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MaterialApp(
-    initialRoute: '/home',
+ runApp(
+    MaterialApp(
+     debugShowCheckedModeBanner: false,
+    initialRoute: '/main-home',
     routes: {
       '/home':(context) => const HomePage(),
        '/login':(context) => const LoginScreen(),
