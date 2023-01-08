@@ -9,24 +9,32 @@ class MovieResult extends StatefulWidget {
 }
 
 class _MovieResultState extends State<MovieResult> {
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: searchMovies('batman'),
-      builder: (context, snapshot){
-        switch (snapshot.hasData) {
-          case true:
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (context, index){
-                return ListTile(
-                  title: Text(snapshot.data[index].title),
-                );
-              },
-            );
-          default:
-            return const Text('Loading...');
-        }
-      });
+      future: searchMovie('batman'),
+    builder: ((context, AsyncSnapshot snapshot) {
+      if (snapshot.hasData) {
+        return Container(
+             height: 200,
+             width: 300,
+          child: ListView.builder(
+            itemCount: snapshot.data!.results.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(snapshot.data!.results[index].title),
+              );
+            },
+          ),
+        );
+      } else {
+        return const Text('Loading...');
+      }
+    }),
+    );
+    }
+     
+      
+        
   }
-}
