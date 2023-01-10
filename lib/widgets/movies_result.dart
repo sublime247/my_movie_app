@@ -9,32 +9,99 @@ class MovieResult extends StatefulWidget {
 }
 
 class _MovieResultState extends State<MovieResult> {
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: searchMovie('batman'),
-    builder: ((context, AsyncSnapshot snapshot) {
-      if (snapshot.hasData) {
-        return Container(
-             height: 200,
-             width: 300,
-          child: ListView.builder(
-            itemCount: snapshot.data!.results.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(snapshot.data!.results[index].title),
-              );
-            },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          FutureBuilder(
+            future: SearchAll().topRated(),
+            builder: ((context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 20,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
+                        child: Stack(
+                          children: [
+                          Image.network(
+                            'https://image.tmdb.org/t/p/original${snapshot.data!.results[index].posterPath}',
+                            fit: BoxFit.cover,),
+                          // Text(snapshot.data!.results[index].title),
+                        ]),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return const Text('Loading...');
+              }
+            }),
           ),
-        );
-      } else {
-        return const Text('Loading...');
-      }
-    }),
-    );
-    }
-     
-      
+        const  SizedBox(height: 10,),
+            FutureBuilder(
+            future: SearchAll().trendingMovies(),
+            builder: ((context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 20,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
+                        child: Stack(
+                          children: [
+                          Image.network(
+                            'https://image.tmdb.org/t/p/original${snapshot.data!.results[index].posterPath}',
+                            fit: BoxFit.cover,),
+                          // Text(snapshot.data!.results[index].title),
+                        ]),
+                      );
+                    },
+                  ),
+                );
+              } else {
+                return const Text('Loading...');
+              }
+            }),
+          ),
         
+                  FutureBuilder(
+                            future: SearchAll().searchMovie('Avengers'),
+                            builder: ((context, AsyncSnapshot snapshot) {
+                              if (snapshot.hasData) {
+                                return SizedBox(
+                  height: 200,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 20,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
+                        child: Stack(
+                          children: [
+                          Image.network(
+                            'https://image.tmdb.org/t/p/original${snapshot.data!.results[index].posterPath}',
+                            fit: BoxFit.cover,),
+                          // Text(snapshot.data!.results[index].title),
+                        ]),
+                      );
+                    },
+                  ),
+                                );
+                              } else {
+                                return const Text('Loading...');
+                              }
+                            }),
+                          ),
+        ],
+      ),
+    );
   }
+}

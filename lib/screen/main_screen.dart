@@ -97,41 +97,92 @@ class _MainHomeState extends State<MainHome> {
           ),
         ),
         body: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 300,
-                    height: 50,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
-                        hintText: 'Search movies, series',
-                        hintStyle: TextStyle(color: Colors.grey[400]),
-                        fillColor: Color.fromARGB(255, 75, 0, 46),
-                        filled: true,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Color.fromARGB(255, 75, 0, 46),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      height: 50,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+                          hintText: 'Search movies, series',
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          fillColor: Color.fromARGB(255, 75, 0, 46),
+                          filled: true,
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(
+                              color: Color.fromARGB(255, 75, 0, 46),
+                            ),
                           ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.grey),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
                         ),
                       ),
                     ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                SizedBox(
+                  height: 50,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(10)
+                          
+                        ),
+                        child: Text('Trending',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)
+                                ),
+                      ),
+                       Container(
+                        child: Text('Trending',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)
+                                ),
+                      ),
+                       Container(
+                        child: Text('Trending',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)
+                                ),
+                      ),
+                       Container(
+                        child: Text('Trending',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)
+                                ),
+                      )
+                    ],
+
                   ),
-                ],
-              ),
-             const MovieResult()
-            ],
+                ),
+               const MovieResult()
+              ],
+            ),
           ),
         ));
   }

@@ -20,31 +20,31 @@ class MovieModel {
 }
 
 class Results {
-  String? backdropPath;
-  String? firstAirDate;
-  List<int>? genreIds;
-  int? id;
-  String? mediaType;
-  String? name;
-  List<String>? originCountry;
-  String? originalLanguage;
-  String? originalName;
-  String? overview;
-  double? popularity;
-  String? posterPath;
-  double? voteAverage;
-  int? voteCount;
-  bool? adult;
-  String? originalTitle;
-  String? releaseDate;
-  String? title;
-  bool? video;
-  int? gender;
-  String? knownForDepartment;
-  String? profilePath;
+ String? backdropPath;
+ String? firstAirDate;
+ List<int>? genreIds;
+ int? id;
+ String? mediaType;
+ String? name;
+ List<dynamic>? originCountry;
+ String? originalLanguage;
+ String? originalName;
+ String? overview;
+ double? popularity;
+ String? posterPath;
+ double? voteAverage;
+ int? voteCount;
+ bool? adult;
+ String? originalTitle;
+ String? releaseDate;
+ String? title;
+ bool? video;
+ int? gender;
+ String? knownForDepartment;
+ String? profilePath;
 
   Results(
-      {this.backdropPath,
+      this.backdropPath,
       this.firstAirDate,
       this.genreIds,
       this.id,
@@ -64,9 +64,8 @@ class Results {
       this.title,
       this.video,
       this.gender,
-     
       this.knownForDepartment,
-      this.profilePath});
+      this.profilePath);
 
   Results.fromJson(Map<String, dynamic> json) {
     backdropPath = json['backdrop_path'];
