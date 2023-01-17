@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_movie_app/services/auth_service.dart';
 import 'package:my_movie_app/widgets/movies_result.dart';
 import 'package:my_movie_app/widgets/search_movie.dart';
+import 'package:my_movie_app/widgets/top_rated.dart';
+import 'package:my_movie_app/widgets/trending_movies.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({super.key});
@@ -21,7 +23,7 @@ class _MainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: Colors.black54,
+        backgroundColor: Colors.black54,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           // backgroundColor: Color.fromARGB(255, 105, 35, 78),
@@ -29,16 +31,16 @@ class _MainHomeState extends State<MainHome> {
           actions: [
             Container(
               margin: const EdgeInsets.only(right: 10),
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.grey,
-                child: Icon(Icons.person),
+                child: Image.asset('assets/movie-logo.png'),
               ),
             )
           ],
         ),
         drawer: Drawer(
-         backgroundColor: Colors.black54,
+          backgroundColor: Colors.black54,
           child: ListView(
             children: <Widget>[
               ListTile(
@@ -56,7 +58,7 @@ class _MainHomeState extends State<MainHome> {
                   Navigator.of(context).pop();
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               ListTile(
@@ -66,34 +68,38 @@ class _MainHomeState extends State<MainHome> {
                 ),
                 onTap: () {
                   // Navigate to item 1 page
+                  Navigator.of(context).pop();
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
               ListTile(
-                title: Text('Horror', style: TextStyle(color: Colors.white)),
+                title:const Text('Trending', style: TextStyle(color: Colors.white)),
                 onTap: () {
                   // Navigate to item 2 page
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const TrendingMovie()));
                 },
               ),
-              SizedBox(
+            const  SizedBox(
                 height: 40,
               ),
               ListTile(
-                title: Text('Action', style: TextStyle(color: Colors.white)),
+                title:const Text('Top Rated', style: TextStyle(color: Colors.white)),
                 onTap: () {
-                  AuthService.firebase().signOut();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const TopRatedMovie()));
                   // Navigate to item 3 page
                 },
               ),
-              SizedBox(
+             const SizedBox(
                 height: 50,
               ),
               ListTile(
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
+                  children: const [
                     Text('Log Out', style: TextStyle(color: Colors.white)),
                   ],
                 ),
@@ -141,9 +147,7 @@ class _MainHomeState extends State<MainHome> {
                           filled: true,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: const BorderSide(
-                              color: Colors.white
-                            ),
+                            borderSide: const BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -172,7 +176,6 @@ class _MainHomeState extends State<MainHome> {
               )));
       //  SearchMoviePage(search: searchMovie.text,);
     }
-
   }
 
   @override

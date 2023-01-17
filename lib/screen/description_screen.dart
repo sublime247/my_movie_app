@@ -76,17 +76,6 @@ class DescriptionScreen extends StatelessWidget {
                   height: 10,
                 ),
                 
-                
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'Popularity: $popularity',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -110,7 +99,7 @@ class DescriptionScreen extends StatelessWidget {
                         child: Text(
                           '$overview',   
                           softWrap: true,
-                          maxLines: 6,
+                          maxLines: 9,
                           // minLines: 5,
                           // textAlign: TextAlign.start,
                           overflow: TextOverflow.ellipsis,

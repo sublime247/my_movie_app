@@ -21,7 +21,7 @@ class SearchAll implements Search {
     try {
       // final Dio dio = Dio();
       final response = await http.get(Uri.parse(
-          'https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=en-US&query=Avengers&page=1&include_adult=false'));
+         'https://api.themoviedb.org/3/search/multi?api_key=$apiKey&language=en-US&query=avengers&page=1&include_adult=false'));
       final movieCollection = jsonDecode(response.body);
 
       return MovieModel.fromJson(movieCollection);
