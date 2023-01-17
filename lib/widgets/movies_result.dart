@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/apis/search_movies_api.dart';
+import 'package:my_movie_app/widgets/future_builder.dart';
 
 class MovieResult extends StatefulWidget {
   const MovieResult({super.key});
@@ -13,95 +14,48 @@ class _MovieResultState extends State<MovieResult> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FutureBuilder(
-            future: SearchAll().topRated(),
-            builder: ((context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
-                        child: Stack(
-                          children: [
-                          Image.network(
-                            'https://image.tmdb.org/t/p/original${snapshot.data!.results[index].posterPath}',
-                            fit: BoxFit.cover,),
-                          // Text(snapshot.data!.results[index].title),
-                        ]),
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return const Text('Loading...');
-              }
-            }),
-          ),
-        const  SizedBox(height: 10,),
-            FutureBuilder(
-            future: SearchAll().trendingMovies(),
-            builder: ((context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
-                        child: Stack(
-                          children: [
-                          Image.network(
-                            'https://image.tmdb.org/t/p/original${snapshot.data!.results[index].posterPath}',
-                            fit: BoxFit.cover,),
-                          // Text(snapshot.data!.results[index].title),
-                        ]),
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return const Text('Loading...');
-              }
-            }),
-          ),
-        
-                  FutureBuilder(
-                            future: SearchAll().searchMovie('Avengers'),
-                            builder: ((context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData) {
-                                return SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 20,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left:8.0, right: 8.0),
-                        child: Stack(
-                          children: [
-                          Image.network(
-                            'https://image.tmdb.org/t/p/original${snapshot.data!.results[index].posterPath}',
-                            fit: BoxFit.cover,),
-                          // Text(snapshot.data!.results[index].title),
-                        ]),
-                      );
-                    },
-                  ),
-                                );
-                              } else {
-                                return const Text('Loading...');
-                              }
-                            }),
-                          ),
-        ],
-      ),
-    );
+        const Padding(
+          padding:  EdgeInsets.only(left:8.0),
+          child:  Text('Trending Movies', style: TextStyle(color: Colors.white),),
+        ),
+        SizedBox(height: 8,),
+        FutureBuilderWidget(
+          searchMovies: SearchAll().trendingMovies,
+          image: 'https://image.tmdb.org/t/p/original',
+        ), 
+        const  SizedBox(height: 20,),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+        const   Padding(
+             padding:  EdgeInsets.only(left:8.0),
+             child:  Text('Top Rated',style: TextStyle(color: Colors.white),),
+           ),
+           const SizedBox(height: 8,),
+            FutureBuilderWidget(
+              searchMovies: SearchAll().topRated,
+              image: 'https://image.tmdb.org/t/p/original',
+            ),
+          ],
+        ),
+        const  SizedBox(height: 20,),
+           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+        const    Padding(
+             padding:  EdgeInsets.only(left:8.0),
+             child:   Text('Avengers collections', style: TextStyle(color: Colors.white),),
+           ),
+          const SizedBox(height: 8,),
+               FutureBuilderWidget(
+          searchMovies: SearchAll().searchMovie,
+          image: 'https://image.tmdb.org/t/p/original',
+               ),
+             ],
+           )      
+      
+  ]  )) ;
   }
 }

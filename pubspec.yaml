@@ -22,6 +22,7 @@ dependencies:
   google_sign_in: ^5.4.2
   dio: ^4.0.6
   http: ^0.13.5
+  device_preview: ^1.1.0
 
 dev_dependencies:
   flutter_test:

@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer';
 
 abstract class Search {
-  Future searchMovie(String search);
+  Future searchMovie();
   Future searchCollections(String search);
   Future trendingMovies();
   Future topRated();
@@ -17,11 +17,11 @@ abstract class Search {
 class SearchAll implements Search {
   String apiKey = '8fd9f7da67f9c8edcf2637b4d564d199';
   @override
-  Future searchMovie(String search) async {
+  Future searchMovie() async {
     try {
       // final Dio dio = Dio();
       final response = await http.get(Uri.parse(
-          'https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=en-US&query=$search&page=1&include_adult=false'));
+          'https://api.themoviedb.org/3/search/movie?api_key=$apiKey&language=en-US&query=Avengers&page=1&include_adult=false'));
       final movieCollection = jsonDecode(response.body);
 
       return MovieModel.fromJson(movieCollection);
@@ -55,7 +55,7 @@ class SearchAll implements Search {
   }
 
   @override
-  Future topRated() async{
+  Future topRated() async {
     try {
       final response = await http.get(Uri.parse(
           'https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&language=en-US&page=1'));

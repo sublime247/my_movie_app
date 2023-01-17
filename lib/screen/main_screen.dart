@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie_app/services/auth_service.dart';
 import 'package:my_movie_app/widgets/movies_result.dart';
+import 'package:my_movie_app/widgets/search_movie.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({super.key});
@@ -10,12 +11,20 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
+  late final TextEditingController searchMovie;
+  @override
+  void initState() {
+    searchMovie = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF840052),
+       backgroundColor: Colors.black54,
         appBar: AppBar(
-          backgroundColor: Color(0xFF840052),
+          backgroundColor: Colors.transparent,
+          // backgroundColor: Color.fromARGB(255, 105, 35, 78),
           elevation: 0,
           actions: [
             Container(
@@ -29,7 +38,7 @@ class _MainHomeState extends State<MainHome> {
           ],
         ),
         drawer: Drawer(
-          backgroundColor: Color.fromARGB(255, 105, 35, 78),
+         backgroundColor: Colors.black54,
           child: ListView(
             children: <Widget>[
               ListTile(
@@ -109,17 +118,31 @@ class _MainHomeState extends State<MainHome> {
                     SizedBox(
                       width: 300,
                       height: 50,
-                      child: TextField(
+                      child: TextFormField(
+                        cursorColor: Colors.white,
+                        style: const TextStyle(color: Colors.white),
+                        controller: searchMovie,
+                        onFieldSubmitted: (value) {
+                          if (searchMovie.text.isNotEmpty) {
+                            setState(() {
+                              searchingMovie();
+                            });
+                          }
+                          if (searchMovie.text.isEmpty) {
+                            return;
+                          }
+                        },
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search, color: Colors.grey[400]),
+                          prefixIcon:
+                              Icon(Icons.search, color: Colors.grey[400]),
                           hintText: 'Search movies, series',
                           hintStyle: TextStyle(color: Colors.grey[400]),
-                          fillColor: Color.fromARGB(255, 75, 0, 46),
+                          fillColor: Colors.transparent,
                           filled: true,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(
-                              color: Color.fromARGB(255, 75, 0, 46),
+                            borderSide: const BorderSide(
+                              color: Colors.white
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -134,56 +157,27 @@ class _MainHomeState extends State<MainHome> {
                 const SizedBox(
                   height: 40,
                 ),
-                SizedBox(
-                  height: 50,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(10)
-                          
-                        ),
-                        child: Text('Trending',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)
-                                ),
-                      ),
-                       Container(
-                        child: Text('Trending',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)
-                                ),
-                      ),
-                       Container(
-                        child: Text('Trending',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)
-                                ),
-                      ),
-                       Container(
-                        child: Text('Trending',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold)
-                                ),
-                      )
-                    ],
-
-                  ),
-                ),
-               const MovieResult()
+                const MovieResult()
               ],
             ),
           ),
         ));
+  }
+
+  searchingMovie() {
+    if (searchMovie.text.isNotEmpty) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SearchMoviePage(
+                search: searchMovie.text,
+              )));
+      //  SearchMoviePage(search: searchMovie.text,);
+    }
+
+  }
+
+  @override
+  void dispose() {
+    searchMovie.dispose();
+    super.dispose();
   }
 }
