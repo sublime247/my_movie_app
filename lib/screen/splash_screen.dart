@@ -2,9 +2,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 5), () {
+      Navigator.pushReplacementNamed(context, '/home');
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,7 +56,7 @@ class SplashScreen extends StatelessWidget {
           ),
         ),
        const Center(
-          child: Text('My Movie App'),
+          child: Text('My Movie App', style: TextStyle(color: Colors.white,fontSize: 40),),
         ),
         Container(
           margin: const EdgeInsets.only(bottom: 30.0),

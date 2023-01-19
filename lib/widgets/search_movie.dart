@@ -41,6 +41,7 @@ Future _searchMovie(String search) async {
   } catch (e) {
     log(e.toString());
   }
+  return null;
 }
 
 class _SearchMoviePageState extends State<SearchMoviePage> {
@@ -51,7 +52,7 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
       backgroundColor: Colors.black54,
       body: FutureBuilder(
         future: _searchMovie('${widget.search}'),
-        builder: ((context, snapshot) {
+        builder: ((context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return GridView.builder(
                 itemCount: snapshot.data!.results.length,
@@ -91,11 +92,13 @@ class _SearchMoviePageState extends State<SearchMoviePage> {
                     )),
                   );
                 }));
-          } else if (snapshot.data!.results.length == 0) {
+          } else if (snapshot.data!.results.indexWhere((element) =>
+                  element.posterPath == null) ==
+              -1) {
             return const Center(
               child: Text('No data found'),
             );
-          }else if(!snapshot.hasData){
+          }else if(snapshot.hasData.toString() == '[]'){
             return const Center(
               child: Text('No data found'),
             );

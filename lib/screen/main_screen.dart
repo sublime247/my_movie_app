@@ -34,7 +34,7 @@ class _MainHomeState extends State<MainHome> {
               child: CircleAvatar(
                 radius: 20,
                 backgroundColor: Colors.grey,
-                child: Image.asset('assets/movie-logo.png'),
+                child: Image.asset('assets/profile.png'),
               ),
             )
           ],
@@ -105,6 +105,7 @@ class _MainHomeState extends State<MainHome> {
                 ),
                 onTap: () {
                   AuthService.firebase().signOut();
+                  Navigator.of(context).pushReplacementNamed('/login');
                   // Navigate to item 3 page
                 },
               ),
@@ -134,6 +135,7 @@ class _MainHomeState extends State<MainHome> {
                               searchingMovie();
                             });
                           }
+                         
                           if (searchMovie.text.isEmpty) {
                             return;
                           }
@@ -174,7 +176,7 @@ class _MainHomeState extends State<MainHome> {
           builder: (context) => SearchMoviePage(
                 search: searchMovie.text,
               )));
-      //  SearchMoviePage(search: searchMovie.text,);
+      
     }
   }
 

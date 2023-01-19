@@ -6,6 +6,7 @@ import 'package:my_movie_app/screen/login_screen.dart';
 import 'package:my_movie_app/screen/main_screen.dart';
 import 'package:my_movie_app/screen/signup_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_movie_app/screen/splash_screen.dart';
 import 'package:my_movie_app/screen/verify.dart';
 import 'firebase_options.dart';
 
@@ -32,13 +33,14 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       locale: DevicePreview.locale(context),
        debugShowCheckedModeBanner: false,
-      initialRoute: '/main-home',
+      initialRoute: '/splash',
       routes: {
         '/home':(context) => const HomePage(),
          '/login':(context) => const LoginScreen(),
          '/register':(context) =>const  SignUpScreen(),
          '/verify-mail':(context)=>const  VerifyEmail(),
          '/main-home':(context) => const  MainHome(),
+         '/splash':(context) => const  SplashScreen(),
       } ,
       );
   }
