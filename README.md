@@ -1,16 +1,9 @@
 # my_movie_app
+A simple movie application that requires users to
+~create an account~
+~signIn~
+Then get access to any type of movies/series, ranging from topRated movie, Trending movie and any collection of movie.
 
-A new Flutter project.
 
-## Getting Started
+https://user-images.githubusercontent.com/72566175/213761003-8a6f487f-588f-4402-8529-cf250bb5c9fd.mp4
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
