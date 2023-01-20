@@ -22,7 +22,7 @@ class MovieModel {
 class Results {
  String? backdropPath;
  String? firstAirDate;
- List<int>? genreIds;
+ List<double>? genreIds;
  int? id;
  String? mediaType;
  String? name;
@@ -71,7 +71,7 @@ class Results {
     backdropPath = json['backdrop_path'];
     firstAirDate = json['first_air_date'];
     if(genreIds != null){
-      genreIds = List<int>.empty(growable: true);
+      genreIds = List<double>.empty(growable: true);
       json['genre_ids'].forEach((e) {
         genreIds!.add(e);
       });
@@ -85,7 +85,7 @@ class Results {
     overview = json['overview'];
     popularity = json['popularity'];
     posterPath = json['poster_path'];
-    voteAverage = json['vote_average'];
+    voteAverage = json['vote_average'].toDouble();
     voteCount = json['vote_count'];
     adult = json['adult'];
     originalTitle = json['original_title'];

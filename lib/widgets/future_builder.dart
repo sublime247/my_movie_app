@@ -30,6 +30,7 @@ class FutureBuilderWidget extends StatelessWidget {
           return SizedBox(
             height: 200,
             child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               itemCount: 20,
               itemBuilder: (context, index) {
