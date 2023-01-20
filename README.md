@@ -1,7 +1,7 @@
 # my_movie_app
-A simple movie application that requires users to
-<b>create an account</b>
-<b>signIn</b>
+A simple movie application that requires users to 
+<b>create an account</b>,
+<b>signIn</b>,
 Then get access to any type of movies/series, ranging from topRated movie, Trending movie and any collection of movie.
 
 
